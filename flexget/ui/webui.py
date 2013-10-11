@@ -14,16 +14,18 @@ import os
 import urllib
 import threading
 import sys
-from flask import Flask, redirect, url_for, abort, request, send_from_directory
+from flask import Flask, redirect, url_for, abort, request, send_from_directory, current_app
 from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm.session import sessionmaker
 from flexget.event import fire_event
 from flexget.plugin import DependencyError
 from flexget.ui.executor import ExecThread
+from flexget.ui.reverse import ReverseProxied
 
 log = logging.getLogger('webui')
 
 app = Flask(__name__)
+app.wsgi_app = ReverseProxied(app.wsgi_app)
 manager = None
 db_session = None
 server = None
@@ -33,23 +35,13 @@ _home = None
 _menu = []
 
 
-def _update_menu(root):
-    """Iterates trough menu navigation and sets the item selected based on the :root:"""
-    for item in _menu:
-        if item['href'].startswith(root):
-            item['current'] = True
-            log.debug('current menu item %s' % root)
-        else:
-            if 'current' in item:
-                item.pop('current')
-
 
 @app.route('/')
 def start():
     """Redirect user to registered home plugin"""
     if not _home:
         abort(404)
-    return redirect(url_for(_home))
+    return redirect(url_for(_home + '.index'))
 
 
 @app.route('/userstatic/<path:filename>')
@@ -62,7 +54,6 @@ def flexget_variables():
     path = urllib.splitquery(request.path)[0]
     root = '/' + path.split('/', 2)[1]
     # log.debug('root is: %s' % root)
-    _update_menu(root)
     return {'menu': _menu, 'manager': manager}
 
 
@@ -103,24 +94,25 @@ def register_plugin(plugin, url_prefix=None, menu=None, order=128, home=False):
     url_prefix = url_prefix or '/' + plugin.name
     app.register_module(plugin, url_prefix=url_prefix)
     if menu:
-        register_menu(url_prefix, menu, order=order)
+        register_menu(plugin.name, menu, order=order)
     if home:
-        register_home(plugin.name + '.index')
+        register_home(plugin.name)
 
 
-def register_menu(href, caption, order=128):
+def register_menu(module, caption, order=128):
     global _menu
-    _menu.append({'href': href, 'caption': caption, 'order': order})
-    _menu = sorted(_menu, key=lambda item: item['order'])
+    _menu.append({'module': module, 'caption': caption, 'order': order})
+    _menu.sort(key=lambda item: item['order'])
 
 
-def register_home(route, order=128):
+
+def register_home(module):
     """Registers homepage elements"""
     global _home
     # TODO: currently supports only one plugin
     if _home is not None:
         raise Exception('Home is already registered')
-    _home = route
+    _home = module
 
 
 @app.after_request
