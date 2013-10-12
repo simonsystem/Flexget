@@ -25,7 +25,7 @@ html {
 }
 
 #layout {
-    background: url('/static/img/construction.png') repeat-x;
+    background: url('../img/construction.png') repeat-x;
     padding: 0 20px;
 }
 
@@ -43,7 +43,7 @@ a:hover {
 }
 
 body {
-    background-image: url('/static/img/background.gif');
+    background-image: url('../img/background.gif');
     font-size: 13px;
     font-family: Arial, SunSans-Regular, Sans-Serif;
     padding: 0;
@@ -70,7 +70,7 @@ h3 {
     float: left;
     width: 100%;
 
-    background: #fff url('/static/img/menu.png') repeat-y;
+    background: #fff url('../img/menu.png') repeat-y;
 }
 
 #menu {
@@ -97,7 +97,7 @@ h3 {
 #header
 {
     height: 80px;
-    background: #fff url('/static/img/FlexGet.png') no-repeat 50% 10px;
+    background: #fff url('../img/FlexGet.png') no-repeat 50% 10px;
 }
 
 #footer
@@ -127,25 +127,25 @@ h3 {
 
 #flash ul li.error {
     padding-left: 1.8em;
-    background: url('/static/img/fatcow-icons/16x16/exclamation.png') no-repeat;
+    background: url('../img/fatcow-icons/16x16/exclamation.png') no-repeat;
     list-style: none;
 }
 
 #flash ul li.info {
     padding-left: 1.8em;
-    background: url('/static/img/fatcow-icons/16x16/information.png') no-repeat;
+    background: url('../img/fatcow-icons/16x16/information.png') no-repeat;
     list-style: none;
 }
 
 #flash ul li.success {
     padding-left: 1.8em;
-    background: url('/static/img/fatcow-icons/16x16/accept.png') no-repeat;
+    background: url('../img/fatcow-icons/16x16/accept.png') no-repeat;
     list-style: none;
 }
 
 #flash ul li.delete {
     padding-left: 1.8em;
-    background: url('/static/img/fatcow-icons/16x16/delete.png') no-repeat;
+    background: url('../img/fatcow-icons/16x16/delete.png') no-repeat;
     list-style: none;
 }
 
@@ -170,7 +170,7 @@ div.help p:last-child {
 
 .tooltip {
     display:none;
-    background:transparent url(/static/img/tooltip/black_arrow.png);
+    background:transparent url('../img/tooltip/black_arrow.png');
     font-size:12px;
     height:70px;
     width:160px;

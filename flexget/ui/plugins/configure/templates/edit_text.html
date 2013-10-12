@@ -1,8 +1,8 @@
 {% extends "configure/configure.html" %}
 {% block configure %}
-    <script type="text/javascript" language="JavaScript" src="/static/js/yaml.js"></script>
-    <script type="text/javascript" language="JavaScript" src="/static/js/jsoneditor.js"></script>
-    <link rel="stylesheet" type="text/css" href="/static/css/jsoneditor.css">
+    <script type="text/javascript" language="JavaScript" src="{{ url_for('.static', filename='js/yaml.js') }}"></script>
+    <script type="text/javascript" language="JavaScript" src="{{ url_for('.static', filename='js/jsoneditor.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('.static', filename='css/jsoneditor.css') }}">
     <script type="text/javascript">
         $(function (){
             $('#name_input').hide();
