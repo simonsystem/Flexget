@@ -4,9 +4,12 @@
     <script type="text/javascript">
         function on_delete(root, name){
             var ans = confirm("Really delete "+name+"?")
+            /*
             if(ans){
                 location.href = "/configure/delete/"+root+"/"+name;
             }
+            */
+            return ans;
         }
     </script>
 {% endblock %}
@@ -31,9 +34,9 @@
             {% for a_name in manager.config[category].iterkeys() %}
                 <li>
                     <div class="item{% if a_name == name|default('') %} selected{% endif %}">
-                        <a href="/configure/edit/text/{{ category }}/{{ a_name }}">{{ a_name }}</a>
+                        <a href="{{ url_for('edit_text', root=category, name=a_name) }}">{{ a_name }}</a>
                         <div class="actions">
-                            <a href="#" onclick="on_delete('{{ category }}','{{ a_name }}')">
+                            <a href="{{ url_for('delete', root=category, name=a_name) }}" onclick="on_delete('{{ category }}','{{ a_name }}')">
                             <img border="0" src="{{ url_for('.static', filename='img/fatcow-icons/16x16/delete.png') }}" alt="Delete"/></a>
                         </div>
                     </div>
