@@ -10,21 +10,20 @@
         }
     </style>
     <script type="text/javascript">
-        function on_delete(task){
-            var ans = confirm("Really delete schedule for "+task+"?");
-            if (ans) {
-                location.href = "/schedule/delete/"+task;
-            }
-        }
-        function on_add(){
-            var task = $("#add_task").val();
-            if (task) {
-                location.href = "/schedule/add/"+task;
-            }
-        }
-        function show_add_area(){
-            $("#add_area").show("slide", {direction: "up"}, 500);
-        }
+        jQuery(function($){
+            $("a.delete_task").click(function(){
+                var task = $(this).attr("attr");
+                var ans = confirm("Really delete schedule for "+task+"?");
+                return ans;
+            });
+            $("a.add_task").click(function(){
+                var task_url = $(".add_task_url").val();
+                $(this).attr("href", task_url);
+            });
+            $(".show_add_area").click(function(){
+                $(".add_area").show("slide", {direction: "up"}, 500);
+            });
+        });
     </script>
 {% endblock %}
 
@@ -64,23 +63,26 @@
                             <option value="days">days</option>
                         </select>
                     </td><td>
-                        <img src="{{ url_for('.static', filename='img/fatcow-icons/16x16/delete.png') }}" alt="Delete"
-                             onclick="on_delete('{{ item.task }}')"/>
+                        <a class="delete_task" attr="{{ item.task }}" href="{{ url_for('delete_schedule', task=item.task) }}">
+                            <img src="{{ url_for('.static', filename='img/fatcow-icons/16x16/delete.png') }}" alt="Delete"/>
+                        </a>
                     </td>
                 </tr>
             {% endfor -%}
             </table>
-            <div id="add_area" style="display:none;">
+            <div class="add_area" style="display:none;">
                 <table class="add_table">
                     <tr>
                         <td>
-                            <select id="add_task">
+                            <select class="add_task_url">
                             {% for task in tasks %}
-                                <option value="{{ task }}">{{ task }}</option>
+                                <option value="{{ url_for('add_schedule', task=task) }}">{{ task }}</option>
                             {% endfor %}
                             </select>
                         </td><td>
-                            <img src="{{ url_for(".static", filename="img/fatcow-icons/16x16/add.png") }}" alt="Add" onclick="on_add()">
+                            <a class="add_task" href="#">
+                                <img id src="{{ url_for('.static', filename='img/fatcow-icons/16x16/add.png') }}" alt="Add">
+                            </a>
                         </td>
                     </tr>
                 </table>
@@ -89,8 +91,8 @@
 
         <div class="buttons">
             {% if tasks %}
-            <button type="button" onclick="show_add_area()">
-                <img src="{{ url_for(".static", filename="img/fatcow-icons/16x16/add.png") }}" alt="Add" align="top">
+            <button type="button" class="show_add_area">
+                <img src="{{ url_for('.static', filename='img/fatcow-icons/16x16/add.png') }}" alt="Add" align="top">
                 Add Task
             </button>
             {% endif %}
@@ -99,4 +101,5 @@
     </fieldset>
 
 </form>
+
 {% endblock %}
